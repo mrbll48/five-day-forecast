@@ -1,0 +1,53 @@
+main {
+    font-size: 62.5%;
+    display: flex;
+    height: 100vh;
+}
+
+header {
+    background-color: rgb(44, 13, 117);
+    color: white;
+    font-size: 3rem;
+    text-align: center;
+    width: 100%;
+}
+
+h2 {
+    font-size: 2rem;
+    
+}
+
+
+h3 {
+    font-size: 2rem;
+    
+}
+
+#search-area {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    margin-right: 1rem;
+}
+
+#search-btn {
+    background-color: blue;
+    color: white;
+    padding: 0 5rem 0 5rem;
+    margin-top: 1rem;
+}
+
+#forecast-area {
+    display: flex;
+    flex-direction: column;
+    width: 67%;
+}
+
+#today-forecast {
+    border: solid 1px;
+}
+ 
+#five-day {
+    display: flex;
+    justify-content: space-between
+}
