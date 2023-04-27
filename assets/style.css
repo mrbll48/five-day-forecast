@@ -2,10 +2,12 @@ main {
     font-size: 62.5%;
     display: flex;
     height: 100vh;
+    font-family:Arial, Helvetica, sans-serif
 }
 
 header {
     background-color: rgb(44, 13, 117);
+    background-image: linear-gradient(blue rgb(44, 13, 117));
     color: white;
     font-size: 3rem;
     text-align: center;
@@ -17,7 +19,6 @@ h2 {
     
 }
 
-
 h3 {
     font-size: 2rem;
     
@@ -26,7 +27,7 @@ h3 {
 #search-area {
     display: flex;
     flex-direction: column;
-    width: 33%;
+    width: 20%;
     margin-right: 1rem;
 }
 
@@ -35,12 +36,20 @@ h3 {
     color: white;
     padding: 0 5rem 0 5rem;
     margin-top: 1rem;
+    width: 100%;
+    padding: 5px 0 5px 0;
+    margin-top: 15px;
 }
 
 #forecast-area {
     display: flex;
     flex-direction: column;
-    width: 67%;
+    width: 80%;
+    margin-top: 1rem;
+}
+
+#city-name, #weather-icon, #wind, #temperature, #humidity {
+    padding-left: 5px;
 }
 
 #today-forecast {
@@ -50,4 +59,27 @@ h3 {
 #five-day {
     display: flex;
     justify-content: space-between
+}
+
+#temperature, #wind, #humidity {
+    font-size: 1.5rem;
+}
+
+#weather-card {
+    background-color: rgb(39, 39, 58);
+    color: white;
+    font-size: 1rem;
+    padding: 0 10px 0 10px;
+}
+
+#date {
+    font-size: 1.5rem;
+}
+
+#btn {
+    background-color: rgb(187, 187, 187);
+    margin-top: 15px;
+    padding: 5px 0 5px 0;
+    width: 100%;
+
 }
