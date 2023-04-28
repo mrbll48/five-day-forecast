@@ -4,6 +4,9 @@ var citySearch = document.getElementById('search-input');
 var stateSearch = document.getElementById('state-search');
 var forecastArea = document.getElementById('five-day');
 var prevSearch = document.getElementById('prev-search');
+var prevBtn;
+
+localStore()
 // function to get the latitude and longitude of the searched city
 function getLocation(event) {
     event.preventDefault();
@@ -18,7 +21,6 @@ function getLocation(event) {
                 var longitude = data[0].lon
                 getWeather(latitude, longitude)
         })
-    localStore()
 }
 // function to get weather based on latitude and longitude 
 function getWeather(lat, lon) {
@@ -41,7 +43,7 @@ function getWeather(lat, lon) {
             })
     })
 }
-
+// function to display the current weather
 function displayCurrentWeather(currentWeather) {
     var cityName = document.getElementById('city-name');
     var weatherIcon = document.getElementById('weather-icon');
@@ -55,10 +57,11 @@ function displayCurrentWeather(currentWeather) {
     windSpeed.textContent = 'Wind: ' + currentWeather.wind.speed + ' MPH'
     humidity.textContent = 'Humidity: ' + currentWeather.main.humidity + '%'
 }
-
+// function to display the weather for the next 5 days
 function displayForecast(forecastWeather) {
     weatherCard = []
     console.log(forecastWeather)
+    // loop to generate cards and place the forecast data into the cards
     for (var i = 1; i < 40; i+=8) {
         var fiveDayTemp = 'Temp: ' + forecastWeather.list[i].main.temp + ' °F';
         var fiveDayWind = 'Wind: ' + forecastWeather.list[i].wind.speed + ' MPH';
@@ -89,19 +92,38 @@ function displayForecast(forecastWeather) {
         weatherCard.appendChild(humidity);
     }
 }
-
+// function to store previous searches made in local storage, and generate buttons to redo the search 
 function localStore() {
     var previousSearches = JSON.parse(localStorage.getItem('city')) || [];
     previousSearches.push(citySearch.value);
+    
     localStorage.setItem('city', JSON.stringify(previousSearches));
     console.log(localStorage.getItem('city'));
-
+   
     for (var i = 0; i < previousSearches.length; i++) {
-        var prevBtn= document.createElement('button');
+        prevBtn= document.createElement('button');
         prevBtn.setAttribute('id', 'btn')
         prevBtn.textContent = previousSearches[i];
         prevSearch.appendChild(prevBtn)
     }
 }
+console.log(prevBtn.textContent)
+prevBtn.addEventListener('click', getPrevLocation)
+function getPrevLocation(event) {
+    event.preventDefault();
+    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + prevBtn.value + ',' + stateSearch.value + ',US&limit=5&appid=' + APIKey;
+ 
+    fetch (requestUrl)
+        .then(function (response) {
+            return response.json();
+        })
+            .then(function (data) {
+                console.log(data);
+                var latitude = data[0].lat
+                var longitude = data[0].lon
+                getWeather(latitude, longitude)
+        })
+}
+
 
 searchBtnEl.addEventListener('click', getLocation);
