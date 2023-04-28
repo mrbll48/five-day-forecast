@@ -11,6 +11,7 @@ localStore()
 function getLocation(event) {
     event.preventDefault();
     var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',' + stateSearch.value + ',US&limit=5&appid=' + APIKey;
+ 
     fetch (requestUrl)
         .then(function (response) {
             return response.json();
@@ -21,6 +22,20 @@ function getLocation(event) {
                 var longitude = data[0].lon
                 getWeather(latitude, longitude)
         })
+
+    console.log(citySearch.value)
+    var previousSearches = JSON.parse(localStorage.getItem('city')) || [];
+    previousSearches.push(citySearch.value);
+    localStorage.setItem('city', JSON.stringify(previousSearches));
+    
+    console.log(localStorage.getItem('city'));
+
+    for (var i = 0; i < previousSearches.length; i++) {
+        var prevBtn= document.createElement('button');
+        prevBtn.setAttribute('id', 'btn')
+        prevBtn.textContent = previousSearches[i];
+        prevSearch.appendChild(prevBtn)
+    }
 }
 // function to get weather based on latitude and longitude 
 function getWeather(lat, lon) {
@@ -94,36 +109,7 @@ function displayForecast(forecastWeather) {
 }
 // function to store previous searches made in local storage, and generate buttons to redo the search 
 function localStore() {
-    var previousSearches = JSON.parse(localStorage.getItem('city')) || [];
-    previousSearches.push(citySearch.value);
-    
-    localStorage.setItem('city', JSON.stringify(previousSearches));
-    console.log(localStorage.getItem('city'));
-   
-    for (var i = 0; i < previousSearches.length; i++) {
-        prevBtn= document.createElement('button');
-        prevBtn.setAttribute('id', 'btn')
-        prevBtn.textContent = previousSearches[i];
-        prevSearch.appendChild(prevBtn)
-    }
-}
-console.log(prevBtn.textContent)
-prevBtn.addEventListener('click', getPrevLocation)
-function getPrevLocation(event) {
-    event.preventDefault();
-    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + prevBtn.value + ',' + stateSearch.value + ',US&limit=5&appid=' + APIKey;
- 
-    fetch (requestUrl)
-        .then(function (response) {
-            return response.json();
-        })
-            .then(function (data) {
-                console.log(data);
-                var latitude = data[0].lat
-                var longitude = data[0].lon
-                getWeather(latitude, longitude)
-        })
-}
 
+}
 
 searchBtnEl.addEventListener('click', getLocation);
