@@ -6,7 +6,6 @@ var forecastArea = document.getElementById('five-day');
 var prevSearch = document.getElementById('prev-search');
 var prevBtn;
 
-localStore()
 // function to get the latitude and longitude of the searched city
 function getLocation(event) {
     event.preventDefault();
@@ -22,20 +21,7 @@ function getLocation(event) {
                 var longitude = data[0].lon
                 getWeather(latitude, longitude)
         })
-
-    console.log(citySearch.value)
-    var previousSearches = JSON.parse(localStorage.getItem('city')) || [];
-    previousSearches.push(citySearch.value);
-    localStorage.setItem('city', JSON.stringify(previousSearches));
-    
-    console.log(localStorage.getItem('city'));
-
-    for (var i = 0; i < previousSearches.length; i++) {
-        var prevBtn= document.createElement('button');
-        prevBtn.setAttribute('id', 'btn')
-        prevBtn.textContent = previousSearches[i];
-        prevSearch.appendChild(prevBtn)
-    }
+        localStore();
 }
 // function to get weather based on latitude and longitude 
 function getWeather(lat, lon) {
@@ -109,7 +95,18 @@ function displayForecast(forecastWeather) {
 }
 // function to store previous searches made in local storage, and generate buttons to redo the search 
 function localStore() {
+    var previousSearches = JSON.parse(localStorage.getItem('city')) || [];
+    previousSearches.push(citySearch.value);
+    localStorage.setItem('city', JSON.stringify(previousSearches));
+    console.log(localStorage.getItem('city'));
 
+    for (var i = 0; i < previousSearches.length; i++) {
+        var prevBtn= document.createElement('button');
+        prevBtn.setAttribute('id', 'btn')
+        prevBtn.textContent = previousSearches[i];
+        prevSearch.appendChild(prevBtn)
+    }
 }
 
 searchBtnEl.addEventListener('click', getLocation);
+prevBtn.addEventListener('click', )
