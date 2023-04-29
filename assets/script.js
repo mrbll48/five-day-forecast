@@ -6,11 +6,43 @@ var forecastArea = document.getElementById('five-day');
 var prevSearch = document.getElementById('prev-search');
 var prevBtn;
 
+
+function getPrevLocation(event) {
+    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',US&limit=5&appid=' + APIKey;
+    event.preventDefault()
+    console.log(prevBtn)
+    fetch (requestUrl)
+        .then(function (response) {
+            return response.json();
+        })
+            .then(function (data) {
+                console.log(data);
+        })
+    var requestForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=data[0].lat&lon=data[0].lon&appid=${APIKey}&units=imperial`
+    var requestWeather = `https://api.openweathermap.org/data/2.5/weather?lat=data[0].lat&lon=data[0].lon&appid=${APIKey}&units=imperial`
+    fetch (requestWeather)
+    .then(function (response) {
+        return response.json();
+    })
+        .then(function (currentWeather) {
+            console.log(currentWeather);
+            fetch (requestForecast)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function(forecastWeather){
+                console.log(forecastWeather)
+                displayCurrentWeather(currentWeather)
+                displayForecast(forecastWeather)
+            })
+    })
+}
+
 // function to get the latitude and longitude of the searched city
 function getLocation(event) {
-    event.preventDefault();
+    
     var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',' + stateSearch.value + ',US&limit=5&appid=' + APIKey;
- 
+    event.preventDefault()
     fetch (requestUrl)
         .then(function (response) {
             return response.json();
@@ -68,7 +100,6 @@ function displayForecast(forecastWeather) {
         var fiveDayWind = 'Wind: ' + forecastWeather.list[i].wind.speed + ' MPH';
         var fiveDayHumidity = 'Humidity: ' + forecastWeather.list[i].main.humidity + '%';
         var fiveDayDate = forecastWeather.list[i].dt * 1000
-        console.log(fiveDayDate)
         var weatherCard = document.createElement('div');
         var date = document.createElement('p');
         var weather = document.createElement('p');
@@ -105,8 +136,16 @@ function localStore() {
         prevBtn.setAttribute('id', 'btn')
         prevBtn.textContent = previousSearches[i];
         prevSearch.appendChild(prevBtn)
+        
     }
+    console.log(prevBtn)
+    activatePrevBtn()
 }
 
+function activatePrevBtn() {
+    document.getElementById('btn').addEventListener('click', getPrevLocation)
+}
+
+console.log(prevBtn)
+console.log(localStorage.getItem('city'))
 searchBtnEl.addEventListener('click', getLocation);
-prevBtn.addEventListener('click', )
