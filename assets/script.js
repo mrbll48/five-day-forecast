@@ -75,7 +75,6 @@ function displayForecast(forecastWeather) {
         var weatherIcon = document.createElement('img')
         var dates = new Date(fiveDayDate);
         var dateFormat = dates.toDateString();
-        console.log(dateFormat)
         weather.textContent = fiveDayTemp;
         windSpeed.textContent = fiveDayWind;
         humidity.textContent = fiveDayHumidity;
@@ -100,7 +99,7 @@ function localStore() {
 
     for (var i = 0; i < previousSearches.length; i++) {
         var prevBtn= document.createElement('button');
-        prevBtn.setAttribute('id', 'btn')
+        prevBtn.setAttribute('class', 'btn')
         prevBtn.textContent = previousSearches[i];
         prevSearch.appendChild(prevBtn)
         
@@ -110,7 +109,14 @@ function localStore() {
 }
 
 function activatePrevBtn() {
-    document.getElementById('btn').addEventListener('click', getPrevLocation)
+    var activateBtn = document.getElementsByClassName('btn')
+    console.log(activateBtn)
+    console.log(activateBtn[0].outerText)
+    
+    for (var i = 0; i < activateBtn.length; i++) {
+        activateBtn[i].addEventListener('click', getPrevLocation)
+        console.log(activateBtn[i].outerText)
+    }
 }
 
 function getPrevLocation(event) {

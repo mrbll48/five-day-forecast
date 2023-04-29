@@ -87,7 +87,7 @@ h3 {
     height: 60%;
 }
 
-#btn {
+.btn {
     background-color: rgb(187, 187, 187);
     margin-top: 15px;
     padding: 5px 0 5px 0;
