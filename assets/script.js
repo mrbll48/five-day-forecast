@@ -6,38 +6,6 @@ var forecastArea = document.getElementById('five-day');
 var prevSearch = document.getElementById('prev-search');
 var prevBtn;
 
-
-function getPrevLocation(event) {
-    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',US&limit=5&appid=' + APIKey;
-    event.preventDefault()
-    console.log(prevBtn)
-    fetch (requestUrl)
-        .then(function (response) {
-            return response.json();
-        })
-            .then(function (data) {
-                console.log(data);
-        })
-    var requestForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=data[0].lat&lon=data[0].lon&appid=${APIKey}&units=imperial`
-    var requestWeather = `https://api.openweathermap.org/data/2.5/weather?lat=data[0].lat&lon=data[0].lon&appid=${APIKey}&units=imperial`
-    fetch (requestWeather)
-    .then(function (response) {
-        return response.json();
-    })
-        .then(function (currentWeather) {
-            console.log(currentWeather);
-            fetch (requestForecast)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function(forecastWeather){
-                console.log(forecastWeather)
-                displayCurrentWeather(currentWeather)
-                displayForecast(forecastWeather)
-            })
-    })
-}
-
 // function to get the latitude and longitude of the searched city
 function getLocation(event) {
     
@@ -92,7 +60,6 @@ function displayCurrentWeather(currentWeather) {
 }
 // function to display the weather for the next 5 days
 function displayForecast(forecastWeather) {
-    weatherCard = []
     console.log(forecastWeather)
     // loop to generate cards and place the forecast data into the cards
     for (var i = 1; i < 40; i+=8) {
@@ -146,6 +113,46 @@ function activatePrevBtn() {
     document.getElementById('btn').addEventListener('click', getPrevLocation)
 }
 
+function getPrevLocation(event) {
+    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',US&limit=5&appid=' + APIKey;
+    event.preventDefault()
+    console.log(requestUrl)
+    console.log(prevBtn)
+    fetch (requestUrl)
+        .then(function (response) {
+            return response.json();
+        })
+            .then(function (data) {
+                console.log(data);
+                var lat = data[0].lat
+                var lon = data[0].lon
+                getPrevForecast(lat, lon)
+        })
+
+
+}
+
+function getPrevForecast(lat, lon) {
+    var requestForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKey}&units=imperial`
+    var requestWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKey}&units=imperial`
+    console.log(requestWeather)
+    fetch (requestWeather)
+    .then(function (response) {
+        return response.json();
+    })
+        .then(function (currentWeather) {
+            console.log(currentWeather);
+            fetch (requestForecast)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function(forecastWeather){
+                console.log(forecastWeather)
+                displayCurrentWeather(currentWeather)
+                displayForecast(forecastWeather)
+            })
+    })
+}
 console.log(prevBtn)
 console.log(localStorage.getItem('city'))
 searchBtnEl.addEventListener('click', getLocation);
