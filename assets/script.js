@@ -10,7 +10,7 @@ let activateBtn = document.getElementsByClassName('btn')
 // function to get the latitude and longitude of the searched city
 function getLocation(event) {
     
-    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',' + stateSearch.value + ',US&limit=5&appid=' + APIKey;
+    var requestUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',' + stateSearch.value + ',US&limit=5&appid=' + APIKey;
     event.preventDefault()
     fetch (requestUrl)
         .then(function (response) {
