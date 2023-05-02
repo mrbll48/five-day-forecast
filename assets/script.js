@@ -5,6 +5,7 @@ var stateSearch = document.getElementById('state-search');
 var forecastArea = document.getElementById('five-day');
 var prevSearch = document.getElementById('prev-search');
 var prevBtn;
+let activateBtn = document.getElementsByClassName('btn')
 
 // function to get the latitude and longitude of the searched city
 function getLocation(event) {
@@ -16,7 +17,6 @@ function getLocation(event) {
             return response.json();
         })
             .then(function (data) {
-                console.log(data);
                 var latitude = data[0].lat
                 var longitude = data[0].lon
                 getWeather(latitude, longitude)
@@ -32,13 +32,11 @@ function getWeather(lat, lon) {
         return response.json();
     })
         .then(function (currentWeather) {
-            console.log(currentWeather);
             fetch (requestForecast)
             .then(function (response) {
                 return response.json();
             })
             .then(function(forecastWeather){
-                console.log(forecastWeather)
                 displayCurrentWeather(currentWeather)
                 displayForecast(forecastWeather)
             })
@@ -60,7 +58,7 @@ function displayCurrentWeather(currentWeather) {
 }
 // function to display the weather for the next 5 days
 function displayForecast(forecastWeather) {
-    console.log(forecastWeather)
+  
     // loop to generate cards and place the forecast data into the cards
     for (var i = 1; i < 40; i+=8) {
         var fiveDayTemp = 'Temp: ' + forecastWeather.list[i].main.temp + ' °F';
@@ -95,35 +93,43 @@ function localStore() {
     var previousSearches = JSON.parse(localStorage.getItem('city')) || [];
     previousSearches.push(citySearch.value);
     localStorage.setItem('city', JSON.stringify(previousSearches));
-    console.log(localStorage.getItem('city'));
-
     for (var i = 0; i < previousSearches.length; i++) {
         var prevBtn= document.createElement('button');
         prevBtn.setAttribute('class', 'btn')
         prevBtn.textContent = previousSearches[i];
         prevSearch.appendChild(prevBtn)
-        
     }
-    console.log(prevBtn)
-    activatePrevBtn()
-}
-
-function activatePrevBtn() {
-    var activateBtn = document.getElementsByClassName('btn')
-    console.log(activateBtn)
-    console.log(activateBtn[0].outerText)
     
-    for (var i = 0; i < activateBtn.length; i++) {
-        activateBtn[i].addEventListener('click', getPrevLocation)
-        console.log(activateBtn[i].outerText)
-    }
+    activatePrevBtn(prevBtn.textContent)
 }
 
-function getPrevLocation(event) {
-    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + citySearch.value + ',US&limit=5&appid=' + APIKey;
-    event.preventDefault()
-    console.log(requestUrl)
-    console.log(prevBtn)
+function activatePrevBtn(cityName) {
+    console.log(cityName)
+    console.log(activateBtn)
+    for (var i = 0; i < activateBtn.length; i++) {
+        var prevCity = activateBtn[i].textContent;
+        activateBtn[i].addEventListener('click', getPrevLocation(prevCity))
+        //  {
+    //         console.log(prevCity)
+    //         var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + activateBtn[i].textContent + ',US&limit=5&appid=' + APIKey;
+    //         console.log(requestUrl)
+    //         fetch (requestUrl)
+    //             .then(function (response) {
+    //                 return response.json();
+    //             })
+    //                 .then(function (data) {
+    //                     console.log(data);
+    //                     var lat = data[0].lat
+    //                     var lon = data[0].lon
+    //                     getPrevForecast(lat, lon)
+    //             })
+    //     })
+    // }
+}}
+
+function getPrevLocation(prevCity) {
+    console.log(prevCity)
+    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + prevCity + ',US&limit=5&appid=' + APIKey;
     fetch (requestUrl)
         .then(function (response) {
             return response.json();
@@ -134,8 +140,6 @@ function getPrevLocation(event) {
                 var lon = data[0].lon
                 getPrevForecast(lat, lon)
         })
-
-
 }
 
 function getPrevForecast(lat, lon) {
@@ -146,19 +150,17 @@ function getPrevForecast(lat, lon) {
     .then(function (response) {
         return response.json();
     })
-        .then(function (currentWeather) {
-            console.log(currentWeather);
+        .then(function (currentWeatherHistory) {
+            console.log(currentWeatherHistory);
             fetch (requestForecast)
             .then(function (response) {
                 return response.json();
             })
-            .then(function(forecastWeather){
-                console.log(forecastWeather)
-                displayCurrentWeather(currentWeather)
-                displayForecast(forecastWeather)
+            .then(function(forecastWeatherHistory){
+                console.log(forecastWeatherHistory)
+                // displayCurrentWeather(currentWeatherHistory)
+                // displayForecast(forecastWeatherHistory)
             })
     })
 }
-console.log(prevBtn)
-console.log(localStorage.getItem('city'))
 searchBtnEl.addEventListener('click', getLocation);
