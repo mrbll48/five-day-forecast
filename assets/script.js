@@ -111,7 +111,7 @@ function activatePrevBtn(cityName) {
         activateBtn[i].addEventListener('click', getPrevLocation(prevCity))
         //  {
     //         console.log(prevCity)
-    //         var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + activateBtn[i].textContent + ',US&limit=5&appid=' + APIKey;
+    //         var requestUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + activateBtn[i].textContent + ',US&limit=5&appid=' + APIKey;
     //         console.log(requestUrl)
     //         fetch (requestUrl)
     //             .then(function (response) {
@@ -129,7 +129,7 @@ function activatePrevBtn(cityName) {
 
 function getPrevLocation(prevCity) {
     console.log(prevCity)
-    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + prevCity + ',US&limit=5&appid=' + APIKey;
+    var requestUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + prevCity + ',US&limit=5&appid=' + APIKey;
     fetch (requestUrl)
         .then(function (response) {
             return response.json();
