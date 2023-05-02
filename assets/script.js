@@ -58,7 +58,7 @@ function displayCurrentWeather(currentWeather) {
 }
 // function to display the weather for the next 5 days
 function displayForecast(forecastWeather) {
-  
+    forecastArea.innerHTML = ''
     // loop to generate cards and place the forecast data into the cards
     for (var i = 1; i < 40; i+=8) {
         var fiveDayTemp = 'Temp: ' + forecastWeather.list[i].main.temp + ' °F';
@@ -108,23 +108,10 @@ function activatePrevBtn(cityName) {
     console.log(activateBtn)
     for (var i = 0; i < activateBtn.length; i++) {
         var prevCity = activateBtn[i].textContent;
-        activateBtn[i].addEventListener('click', getPrevLocation(prevCity))
-        //  {
-    //         console.log(prevCity)
-    //         var requestUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + activateBtn[i].textContent + ',US&limit=5&appid=' + APIKey;
-    //         console.log(requestUrl)
-    //         fetch (requestUrl)
-    //             .then(function (response) {
-    //                 return response.json();
-    //             })
-    //                 .then(function (data) {
-    //                     console.log(data);
-    //                     var lat = data[0].lat
-    //                     var lon = data[0].lon
-    //                     getPrevForecast(lat, lon)
-    //             })
-    //     })
-    // }
+        activateBtn[i].addEventListener('click', function(){
+            getPrevLocation(prevCity)
+        } )
+
 }}
 
 function getPrevLocation(prevCity) {
@@ -158,8 +145,8 @@ function getPrevForecast(lat, lon) {
             })
             .then(function(forecastWeatherHistory){
                 console.log(forecastWeatherHistory)
-                // displayCurrentWeather(currentWeatherHistory)
-                // displayForecast(forecastWeatherHistory)
+                displayCurrentWeather(currentWeatherHistory)
+                displayForecast(forecastWeatherHistory)
             })
     })
 }
